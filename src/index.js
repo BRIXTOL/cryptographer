@@ -99,155 +99,46 @@ function decode(input) {
 
 }
 
-/**
- * State Config
- */
-const state = (
-
-  function (keychain) {
-
-    /**
-     * Supported Encryption algorithms
-     */
-    const algorithms = [
-      'aes-256-cbc',
-      'aes-256-cbc-hmac-sha1',
-      'aes-256-cbc-hmac-sha256',
-      'aes-256-cfb',
-      'aes-256-cfb1',
-      'aes-256-cfb8',
-      'aes-256-ctr',
-      'aes-256-ofb',
-      'aes256',
-      'camellia-256-cbc',
-      'camellia-256-cfb',
-      'camellia-256-cfb1',
-      'camellia-256-cfb8',
-      'camellia-256-ofb',
-      'camellia256'
-    ]
-
-    /* -------------------------------------------- */
-    /*                    PRIVATE                   */
-    /* -------------------------------------------- */
-
-    /**
-     * Secret
-     *
-     * @type {object}
-     */
-    let secret
-
-    /**
-     * Master
-     *
-     * @type {string}
-     */
-    let master
-
-    /**
-     * Algorithm
-     *
-     * @type {string}
-     */
-    let algorithm = 'aes-256-ctr'
-
-    /* -------------------------------------------- */
-    /*                    CLOSURE                   */
-    /* -------------------------------------------- */
-
-    return {
-
-      /**
-       * Key hash and IV setter
-       *
-       * - Left value is encoded variation name
-       * - Right value is encoded secret key
-       *
-       * @example ['standard', 'password']
-       */
-      set key(value) {
-
-        secret = hash(value)
-
-      },
-
-      /**
-       * Key hash getter - MD5 by default, (see `hash()`)
-       *
-       * @returns {String}
-       */
-      get key() {
-
-        return secret
-
-      },
-
-      /**
-       * IV hash getter - Partial slice from `key`
-       *
-       * @example '123456789' > '6789'
-       * @returns {String}
-       */
-      get iv() {
-
-        return iv(this.key)
-
-      },
-
-      /**
-       * Set Encryption algorithm
-       *
-       * @type {string}
-       */
-      set algorithm(value) {
-
-        if (value !== algorithm && algorithms.indexOf(algorithm) < 0) {
-          throw new Error(`"${algorithm}" is not supported`)
-        }
-
-        algorithm = value
-
-      },
-
-      /**
-       * Get Encryption algorithm
-       *
-       * @returns {string}
-       */
-      get algorithm() {
-
-        return algorithm
-
-      },
-
-      /**
-       * Empty options object - passed to crypto
-       *
-       * @type {object}
-       */
-      options: Object.create(null)
-
-    }
-  }
-
-)(new Map())
-
 
 /**
  * Cryptographer
  */
-export default (key, algorithm = undefined, options = undefined) => {
+export default (key, algorithm = 'aes-256-ctr', options = {}) => {
+
+  const state = {}
+
+  const algorithms = [
+    'aes-256-cbc',
+    'aes-256-cbc-hmac-sha1',
+    'aes-256-cbc-hmac-sha256',
+    'aes-256-cfb',
+    'aes-256-cfb1',
+    'aes-256-cfb8',
+    'aes-256-ctr',
+    'aes-256-ofb',
+    'aes256',
+    'camellia-256-cbc',
+    'camellia-256-cfb',
+    'camellia-256-cfb1',
+    'camellia-256-cfb8',
+    'camellia-256-ofb',
+    'camellia256'
+  ]
 
   if (typeof key !== 'string' || key === '') {
     throw new Error('required an string key')
   }
 
-  if (typeof algorithm === 'string') {
-    state.algorithm = algorithm
+
+  if (algorithm !== 'aes-256-ctr' && algorithms.indexOf(algorithm) < 0) {
+    throw new Error(`"${algorithm}" is not supported`)
   }
 
-  state.key = key
+
+  state.algorithm = algorithm
+  state.key = hash(key)
+  state.iv = iv(state.key)
+  state.options = options
 
   // console.log(state, encode.bind(state)(key))
 

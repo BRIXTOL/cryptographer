@@ -1,10 +1,10 @@
 # @brixtol/cryptographer
 
-Cryptographer with IV used for encryption and decrytption of various data types with [crypto](#). Uses an [aes-256-gcm](https://en.wikipedia.org/wiki/Galois/Counter_Mode) algorithm and supports multiple ciphers.
+Cryptographer with IV used for encryption and decrytption of various data types with [crypto](https://nodejs.org/api/crypto.html). Uses an [aes-256-gcm](https://en.wikipedia.org/wiki/Galois/Counter_Mode) algorithm and supports multiple ciphers.
 
 ## Why?
 
-For encryption/decrytion of sensitive data veging sent across the wire.
+For encryption/decrytion of sensitive data sent across the wire and processed within serverless functions. We opened sourced the package which is merely an wrapper for encryption/decryption with Crypto.
 
 ## Install
 

@@ -2,11 +2,18 @@ import { CipherCCMOptions } from"crypto"
 
 
 interface Cryptographers {
+  /**
+   * The data to encode
+   */
   encode: (data: string | object | string[] | object[] | number) => string,
+
+  /**
+   * The data to decode
+   */
   decode: (data: string) => string | object | string[] | object[] | number
 }
 
-type IAlgorithm =  (
+type IAlgorithm = (
  "aes-256-cbc" |
  "aes-256-cbc-hmac-sha1" |
  "aes-256-cbc-hmac-sha256" |
@@ -25,7 +32,19 @@ type IAlgorithm =  (
 )
 
 export default function(
+  /**
+   * The IV Secret
+   */
   secret: string,
-  algorithm: IAlgorithm,
-  options: CipherCCMOptions
+
+  /**
+   * The Algorithm, defaults to `aes-256-ctr`
+   */
+  algorithm?: IAlgorithm,
+
+  /**
+   * Cipher Options
+   */
+  options?: CipherCCMOptions
+
 ): Cryptographers
