@@ -1,6 +1,6 @@
 {
   "name": "@brixtol/cryptographer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Encrypt and decrypt strings, numbers and objects",
   "author": "Nikolas Savvidis <nicos@gmx.com>",
   "license": "MIT",
