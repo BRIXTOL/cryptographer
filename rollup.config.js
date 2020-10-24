@@ -6,10 +6,16 @@ export default {
   input: 'src/index.js',
   output: [
     {
+      format: 'es',
+      file: pkg.module,
+      sourcemap: process.env.prod ? false : 'inline',
+      preferConst: true
+    },
+    {
       format: 'cjs',
       file: pkg.main,
       sourcemap: process.env.prod ? false : 'inline',
-      exports: 'named'
+      exports: 'auto'
     }
   ],
   external: [ 'crypto' ],

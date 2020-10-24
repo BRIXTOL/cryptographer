@@ -16,10 +16,14 @@ pnpm i @brixtol/cryptographer --save-dev
 
 ## Usage
 
-```js
+```ts
 import cryptographer from "@brixtol/cryptographer";
 
-const crypto = cryptographer("secret", "aes-256-ctr");
+const crypto = cryptographer(
+  secret: "secret"
+  , algorithm?: "aes-256-ctr"
+  , options?: CipherCCMOptions
+);
 
 // Encoding
 crypto.encode({ foo: "bar" });
@@ -27,11 +31,6 @@ crypto.encode({ foo: "bar" });
 // Decoding, eg: { foo: "bar" }
 crypto.decode("12345678910abcdefghijkmnopqrstuvwxyz");
 
-// Ciphers
-crypto.ciphers();
-
-// Hash
-crypto.hash("secret", "md5");
 ```
 
 ## Ciphers

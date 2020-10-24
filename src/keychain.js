@@ -3,7 +3,6 @@ import os from 'os'
 
 /**
  * Creates hash of an string based on available hashes of platform
- *
  * @param {string} input
  * @param {string} hash
  * @returns {string}
@@ -39,24 +38,15 @@ const iv = (key, length = 16) => {
  */
 const normalizeInput = input => {
 
-  if (input === null || typeof input === 'undefined') {
-    throw new Error('required origin')
-  }
-
-  if (typeof input === 'object') {
-    input = JSON.stringify(input)
-  }
-
-  if (typeof input !== 'string') {
-    input = input.toString()
-  }
+  if (input === null || typeof input === 'undefined') throw new Error('required origin')
+  if (typeof input === 'object') input = JSON.stringify(input)
+  if (typeof input !== 'string') input = input.toString()
 
   return input
-
 }
 
 /**
- * If is JSON string then parse, else just return
+ * If is JSON string then parse
  *
  * @param input
  * @returns {*}
@@ -74,7 +64,7 @@ const normalizeOutput = input => {
  * @param input
  * @return {string}
  */
-function encode(input) {
+function encode (input) {
 
   input = normalizeInput(input)
 
@@ -88,7 +78,7 @@ function encode(input) {
  * @param input
  * @return {string}
  */
-function decode(input) {
+function decode (input) {
 
   input = normalizeInput(input)
 
@@ -100,7 +90,7 @@ function decode(input) {
 }
 
 /**
- * State Config
+ * State Config - provides model of each cipher
  */
 const state = (
 
@@ -159,6 +149,68 @@ const state = (
     return {
 
       /**
+       * Get Master key - Returns the master key encode
+       *
+       * @returns {string}
+       */
+      get master () {
+
+        return master
+
+      },
+
+      /**
+       * Master key hash and IV setter, master keys
+       * remains in cache, setter for master assigns
+       * 1 time, on initialisation.
+       *
+       * @param {string} key The master password
+       */
+      set master (key) {
+
+        master = hash(key)
+
+      },
+
+      /**
+       * Keychain model - Saves the keychain
+       *
+       * - Left value is encoded secret key
+       * - Right value is encoded value
+       *
+       * @example ['password', 'name']
+       */
+      get keychain () {
+
+        // @ts-ignore
+        return keychain
+
+      },
+
+      /**
+       * Keychain model - Saves the keychain
+       *
+       * - Left value is encoded secret key
+       * - Right value is encoded value
+       *
+       * @example ['password', 'name']
+       * @param {string} value
+       */
+      set keychain (value) {
+
+        secret = hash(value)
+
+        if (!keychain.has(secret)) {
+          keychain.set(secret, {
+            iv: this.iv,
+            key: encode.bind(this)(secret),
+            secret: ''
+          })
+        }
+
+      },
+
+      /**
        * Key hash and IV setter
        *
        * - Left value is encoded variation name
@@ -166,7 +218,7 @@ const state = (
        *
        * @example ['standard', 'password']
        */
-      set key(value) {
+      set key (value) {
 
         secret = hash(value)
 
@@ -177,7 +229,7 @@ const state = (
        *
        * @returns {String}
        */
-      get key() {
+      get key () {
 
         return secret
 
@@ -189,7 +241,7 @@ const state = (
        * @example '123456789' > '6789'
        * @returns {String}
        */
-      get iv() {
+      get iv () {
 
         return iv(this.key)
 
@@ -200,7 +252,7 @@ const state = (
        *
        * @type {string}
        */
-      set algorithm(value) {
+      set algorithm (value) {
 
         if (value !== algorithm && algorithms.indexOf(algorithm) < 0) {
           throw new Error(`"${algorithm}" is not supported`)
@@ -215,12 +267,11 @@ const state = (
        *
        * @returns {string}
        */
-      get algorithm() {
+      get algorithm () {
 
         return algorithm
 
       },
-
       /**
        * Empty options object - passed to crypto
        *
@@ -233,19 +284,43 @@ const state = (
 
 )(new Map())
 
+export const identity = () => createHash('sha256').update(os.homedir(), 'utf8').digest('hex')
+
+/**
+ * Keychain Supplier - Used for public exposed keychains
+ *
+ * @param {string} master The master key, unlocks all variations
+ * @param {object} keys Access keys, unlocks on a per-varation basis
+ */
+export const keychain = (master, keys = undefined) => {
+
+  if (!master || !keys) throw new Error('Empty keychain passed')
+
+  if (Object.isFrozen(state)) {
+    throw new Error('Keychain exists, modifications are prohibited')
+  }
+
+  state.master = master
+
+  for (const key in keys) {
+    state.keychain = key
+    console.log(key, encode.bind(state)(key))
+    for (const password of keys[key]) {
+      state.keychain.get(state.key).secret = encode.bind(state)(password)
+    }
+  }
+
+  console.log(state.keychain)
+}
 
 /**
  * Cryptographer
  */
-export default (key, algorithm = undefined, options = undefined) => {
+export const secret = (key, algorithm = undefined, options = undefined) => {
 
-  if (typeof key !== 'string' || key === '') {
-    throw new Error('required an string key')
-  }
-
-  if (typeof algorithm === 'string') {
-    state.algorithm = algorithm
-  }
+  if (typeof key !== 'string' || key === '') throw new Error('required an string key')
+  if (typeof algorithm === 'string') state.algorithm = algorithm
+  if (typeof options === 'object') Object.assign(state.options, options)
 
   state.key = key
 
