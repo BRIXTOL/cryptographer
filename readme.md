@@ -9,10 +9,8 @@ For encryption/decryption of sensitive data sent across the wire and processed w
 ## Install
 
 ```cli
-pnpm i @brixtol/cryptographer --save-dev
+pnpm add @brixtol/cryptographer
 ```
-
-> This project is not available on the public NPM registry
 
 ## Usage
 
