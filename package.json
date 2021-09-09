@@ -1,48 +1,53 @@
 {
-	"name": "@brixtol/cryptographer",
-	"version": "0.1.2",
-	"description": "Encrypt and decrypt strings, numbers and objects",
-	"author": "Nikolas Savvidis <nicos@gmx.com>",
-	"license": "MIT",
-	"created": "06-10-2020",
-	"module": "package/index.es.js",
-	"main": "package/index.cjs.js",
-	"types": "index.d.ts",
-	"private": false,
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/brixtol/cryptographer.git"
-	},
-	"bugs": {
-		"url": "https://github.com/brixtol/cryptographer/issues"
-	},
-	"scripts": {
-		"watch": "rollup -c -w",
-		"build": "rollup -c --environment prod",
-		"pack": "cd versions; pnpm pack ../ && cd ..",
-		"test": "ava --watch --verbose"
-	},
-	"ava": {
-		"require": [
-			"esm"
-		],
-		"files": [
-			"test/**/*"
-		],
-		"concurrency": 5
-	},
-	"devDependencies": {
-		"@brixtol/eslint-config-javascript": "workspace:^2.0.0",
-		"@brixtol/prettier-config": "workspace:^1.0.3",
-		"@rollup/plugin-commonjs": "^17.1.0",
-		"ava": "^3.15.0",
-		"chalk": "^4.1.0",
-		"esm": "^3.2.25",
-		"rollup-plugin-terser": "^7.0.2"
-	},
-	"peerDependencies": {
-		"ava": "^3.13.0",
-		"esm": "^3.2.25",
-		"rollup": "^2.26.11"
-	}
+  "name": "@brixtol/cryptographer",
+  "version": "0.2.0",
+  "description": "Encrypt and decrypt strings, numbers and objects",
+  "author": {
+    "name": "Νίκος Σαβίδης ",
+    "email": "n@brixtol.com",
+    "url": "https://brixtoltextiles.com"
+  },
+  "license": "MIT",
+  "module": "package/index.es.js",
+  "main": "package/index.cjs.js",
+  "types": "package/index.d.ts",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/brixtol/cryptographer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brixtol/cryptographer/issues"
+  },
+  "scripts": {
+    "dev": "rollup -c -w",
+    "build": "rollup -c --environment prod",
+    "pack": "cd versions; pnpm pack ../ && cd ..",
+    "test": "ava --watch --verbose"
+  },
+  "prettier": "@brixtol/prettier-config",
+  "eslintConfig": {
+    "ignorePatterns": "package",
+    "extends": "@brixtol/eslint-config"
+  },
+  "ava": {
+    "files": [
+      "./test/*.js"
+    ],
+    "require": [
+      "esm"
+    ]
+  },
+  "peerDependencies": {
+    "rollup": "^2.26.11"
+  },
+  "devDependencies": {
+    "@brixtol/eslint-config": "workspace:^1.0.1",
+    "@brixtol/prettier-config": "workspace:^1.0.3",
+    "@brixtol/rollup-config": "workspace:^1.2.0",
+    "@brixtol/tsconfig": "workspace:^1.0.1",
+    "esm": "^3.2.25",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.2"
+  }
 }
