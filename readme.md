@@ -15,7 +15,7 @@ pnpm add @brixtol/cryptographer
 ## Usage
 
 ```ts
-import { Cryptographer } from "@brixtol/cryptographer";
+import { Cryptographer, md5 } from "@brixtol/cryptographer";
 
 const crypto = Cryptographer(
   secret: "secret"
@@ -28,6 +28,9 @@ crypto.encode({ foo: "bar" });
 
 // Decoding, eg: { foo: "bar" }
 crypto.decode("12345678910abcdefghijkmnopqrstuvwxyz");
+
+// Create a md5 hash
+md5('hello world') // => 5eb63bbbe01eeed093cb22bb8f5acdc3
 
 ```
 
