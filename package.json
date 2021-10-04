@@ -1,6 +1,6 @@
 {
   "name": "@brixtol/cryptographer",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Encrypt and decrypt strings, numbers and objects",
   "author": {
     "name": "Νίκος Σαβίδης ",
@@ -8,7 +8,7 @@
     "url": "https://brixtoltextiles.com"
   },
   "license": "MIT",
-  "module": "package/index.es.js",
+  "module": "package/index.js",
   "main": "package/index.cjs.js",
   "types": "package/index.d.ts",
   "private": false,
@@ -48,6 +48,6 @@
     "@brixtol/tsconfig": "workspace:^1.0.1",
     "esm": "^3.2.25",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.2"
+    "typescript": "^4.4.3"
   }
 }
