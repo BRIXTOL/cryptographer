@@ -3,6 +3,7 @@
   "exclude": ["node_modules", "package"],
   "include": ["src/*"],
   "compilerOptions": {
-    "outDir": "package"
+    "outDir": "package",
+    "declaration": true
   }
 }
