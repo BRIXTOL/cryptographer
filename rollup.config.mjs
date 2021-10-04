@@ -8,7 +8,7 @@ export default rollup(
     output: [
       {
         format: 'es',
-        file: config.output.module,
+        dir: 'package',
         sourcemap: env.is('dev', 'inline'),
         preferConst: true
       },
@@ -26,7 +26,8 @@ export default rollup(
           {
             typescript,
             tslib,
-            outputToFilesystem: false
+            outputToFilesystem: false,
+            tsconfig: 'tsconfig.json'
           }
         )
       ]
