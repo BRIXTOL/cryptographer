@@ -1,5 +1,8 @@
 {
   "extends": "@brixtol/tsconfig",
   "exclude": ["node_modules", "package"],
-  "include": ["src/*"]
+  "include": ["src/*"],
+  "compilerOptions": {
+    "outDir": "package"
+  }
 }
