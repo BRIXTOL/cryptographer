@@ -1,10 +1,24 @@
 // @ts-nocheck
 
 import test from 'ava';
-import { Cryptographer } from '../package/index.cjs';
+import { Cryptographer, md5 } from '../package/index.cjs';
 
 test.before((t) => {
   t.context.crypto = Cryptographer('$ecret');
+});
+
+test.serial('Create md5 string', (t) => {
+
+  const value = 'hello world';
+  const hash = md5(value);
+
+  t.not(hash, value);
+
+  t.log('md5 before: ', value);
+  t.log('md5 after: ', hash);
+
+  t.pass('md5 text passes');
+
 });
 
 test.serial('String value to encode and decode', (t) => {
