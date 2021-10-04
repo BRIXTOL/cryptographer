@@ -1,4 +1,10 @@
-import { createHash, createDecipheriv, createCipheriv, getHashes, CipherCCMOptions } from 'crypto';
+import {
+  createHash,
+  createDecipheriv,
+  createCipheriv,
+  getHashes,
+  CipherCCMOptions
+} from 'crypto';
 
 export declare type Algorithm = (
   'aes-256-cbc' |
@@ -19,6 +25,24 @@ export declare type Algorithm = (
 )
 
 export declare type Data = string | object | string[] | object[] | number
+
+const algorithms = new Set([
+  'aes-256-cbc',
+  'aes-256-cbc-hmac-sha1',
+  'aes-256-cbc-hmac-sha256',
+  'aes-256-cfb',
+  'aes-256-cfb1',
+  'aes-256-cfb8',
+  'aes-256-ctr',
+  'aes-256-ofb',
+  'aes256',
+  'camellia-256-cbc',
+  'camellia-256-cfb',
+  'camellia-256-cfb1',
+  'camellia-256-cfb8',
+  'camellia-256-ofb',
+  'camellia256'
+]);
 
 /**
  * Creates hash of an string based on available hashes of platform
@@ -113,6 +137,19 @@ function decode (input: any) {
 }
 
 /**
+ * Create md5 hash string
+ */
+export function md5 (value: string) {
+
+  if (typeof value !== 'string') value = String(value);
+
+  return createHash('md5')
+    .update(value)
+    .digest('hex')
+    .toString();
+}
+
+/**
  * Cryptographer
  */
 export function Cryptographer (
@@ -130,29 +167,11 @@ export function Cryptographer (
     options: CipherCCMOptions
   }> = {};
 
-  const algorithms = [
-    'aes-256-cbc',
-    'aes-256-cbc-hmac-sha1',
-    'aes-256-cbc-hmac-sha256',
-    'aes-256-cfb',
-    'aes-256-cfb1',
-    'aes-256-cfb8',
-    'aes-256-ctr',
-    'aes-256-ofb',
-    'aes256',
-    'camellia-256-cbc',
-    'camellia-256-cfb',
-    'camellia-256-cfb1',
-    'camellia-256-cfb8',
-    'camellia-256-ofb',
-    'camellia256'
-  ];
-
   if (typeof secret !== 'string' || secret === '') {
     throw new Error('required an string key');
   }
 
-  if (algorithm !== 'aes-256-ctr' && algorithms.indexOf(algorithm) < 0) {
+  if (algorithm !== 'aes-256-ctr' && algorithms.has(algorithm)) {
     throw new Error(`"${algorithm}" is not supported`);
   }
 
