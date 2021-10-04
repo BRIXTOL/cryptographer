@@ -1,5 +1,6 @@
 # DOT FILES
 .gitignore
+package/tsconfig.tsbuildinfo
 
 # FILES
 tsconfig.json
